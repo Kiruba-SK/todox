@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -10,7 +10,6 @@ import activeFilterAtom from "../../recoil/activeFilterAtom";
 import editTaskAtom from "../../recoil/editTaskAtom";
 import filterDataAtom from "../../recoil/filterDataAtom";
 
-
 const Todos = () => {
   // global variable
   const [todoApiData, setTodoApiData] = useRecoilState(todoDataAtom);
@@ -19,6 +18,18 @@ const Todos = () => {
   const [filterData, setFilterData] = useRecoilState(filterDataAtom);
   // local variable
   const [inputData, setInputData] = useRecoilState(searchTextAtom);
+  const [csrfToken, setCsrfToken] = useState("");
+
+  // Fetch CSRF Token from Django when component loads
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/csrf/", {
+      method: "GET",
+      credentials: "include", // Ensures cookies are sent
+    })
+      .then((response) => response.json())
+      .then((data) => setCsrfToken(data.csrfToken)) // Save token to state
+      .catch((error) => console.error("CSRF Token Fetch Error:", error));
+  }, []);
 
   return (
     <div className="todo-main-container">
@@ -49,7 +60,9 @@ const Todos = () => {
                         method: "POST",
                         headers: {
                           "Content-Type": "application/json",
+                          "X-CSRFToken": csrfToken,
                         },
+                        credentials: "include",
                         body: JSON.stringify(bodyData),
                       })
                         .then((response) => response.json())
@@ -92,7 +105,9 @@ const Todos = () => {
                               method: "POST",
                               headers: {
                                 "Content-Type": "application/json",
+                                "X-CSRFToken": csrfToken,
                               },
+                              credentials: "include",
                               body: JSON.stringify(bodyData),
                             })
                               .then((response) => response.json())
@@ -127,7 +142,9 @@ const Todos = () => {
                               method: "DELETE",
                               headers: {
                                 "Content-Type": "application/json",
+                                "X-CSRFToken": csrfToken,
                               },
+                              credentials: "include",
                               body: JSON.stringify(bodyData),
                             })
                               .then((response) => response.json())

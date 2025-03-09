@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { filterEndpoints } from "../../helper/filter";
 import { useRecoilState } from "recoil";
 import todoDataAtom from "../../recoil/todoDataAtom";
@@ -10,7 +10,19 @@ const Filters = () => {
   const [todoApiData, setTodoApiData] = useRecoilState(todoDataAtom);
   const [activeFilter, setActiveFilter] = useRecoilState(activeFilterAtom);
   const [filterData, setFilterData] = useRecoilState(filterDataAtom);
-  
+  const [csrfToken, setCsrfToken] = useState("");
+
+  // Fetch CSRF Token from Django when component loads
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/csrf/", {
+      method: "GET",
+      credentials: "include", // Ensures cookies are sent
+    })
+      .then((response) => response.json())
+      .then((data) => setCsrfToken(data.csrfToken)) // Save token to state
+      .catch((error) => console.error("CSRF Token Fetch Error:", error));
+  }, []);
+
   // useEffect(() => {
   //   console.log("filterData");
   //   console.log(filterData);
@@ -29,7 +41,6 @@ const Filters = () => {
               className="filter-btn-container"
               onClick={() => setActiveFilter(data?.label)}
             >
-              
               <button
                 onClick={() => {
                   fetch(
@@ -38,13 +49,14 @@ const Filters = () => {
                       method: "GET",
                       headers: {
                         "Content-Type": "application/json",
+                        "X-CSRFToken": csrfToken,
                       },
-                      
+                      credentials: "include",
                     }
                   )
                     .then((response) => response.json())
                     .then((data) => {
-                      console.log( data); 
+                      console.log(data);
                       setTodoApiData(data?.todo_data);
                       setFilterData(data?.stats);
                     })

@@ -6,7 +6,7 @@ import NewUser from "./pages/NewUser";
 // recoil
 import { useRecoilState } from "recoil";
 import userInfoAtom from "./recoil/userInfoAtom";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 function App() {
   const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);

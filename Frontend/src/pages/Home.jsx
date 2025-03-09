@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import addTaskAtom from "../recoil/addTaskAtom";
 import todoDataAtom from "../recoil/todoDataAtom";
 import AddTask from "../components/home/AddTask";
@@ -21,6 +21,7 @@ const Home = () => {
   const [selectedEditTask, setSelectedEditTask] = useRecoilState(editTaskAtom);
   const [filterData, setFilterData] = useRecoilState(filterDataAtom);
   const [closeTask, setCloseTask] = useRecoilState(closeTaskAtom);
+  const [csrfToken, setCsrfToken] = useState("");
 
   const homeData = {
     stats: [
@@ -58,6 +59,17 @@ const Home = () => {
     ],
   };
 
+  // Fetch CSRF Token from Django when component loads
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/csrf/", {
+      method: "GET",
+      credentials: "include", // Ensures cookies are sent
+    })
+      .then((response) => response.json())
+      .then((data) => setCsrfToken(data.csrfToken)) // Save token to state
+      .catch((error) => console.error("CSRF Token Fetch Error:", error));
+  }, []);
+
   // initial call to get apiData
 
   useEffect(() => {
@@ -65,7 +77,9 @@ const Home = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
       },
+      credentials: "include",
     })
       .then((response) => response.json())
       .then((data) => {
@@ -81,7 +95,7 @@ const Home = () => {
 
   return (
     <div className="relative">
-      {addTask &&  (
+      {addTask && (
         <div>
           <div
             className="add-overlay "

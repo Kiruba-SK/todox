@@ -1,13 +1,25 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import newUserAtom from "../../recoil/newUserAtom";
 import { useNavigate } from "react-router-dom";
 
 const NewuserCard = () => {
   const [newUserTask, setNewUserTask] = useRecoilState(newUserAtom);
+  const [csrfToken, setCsrfToken] = useState("");
 
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
+
+  // Fetch CSRF Token from Django when component loads
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/csrf/", {
+      method: "GET",
+      credentials: "include", // Ensures cookies are sent
+    })
+      .then((response) => response.json())
+      .then((data) => setCsrfToken(data.csrfToken)) // Save token to state
+      .catch((error) => console.error("CSRF Token Fetch Error:", error));
+  }, []);
 
   // functions
   const navigate = useNavigate();
@@ -24,7 +36,9 @@ const NewuserCard = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
       },
+      credentials: "include",
       body: JSON.stringify(userCredentials),
     })
       .then((response) => response.json())
@@ -77,7 +91,9 @@ const NewuserCard = () => {
             <button
               className="save-button"
               type="submit"
-            
+              onClick={() => {
+                navigate("/");
+              }}
             >
               Save
             </button>
@@ -89,7 +105,3 @@ const NewuserCard = () => {
 };
 
 export default NewuserCard;
-
-//  onClick={() => {
-//   navigate("/");
-// }}

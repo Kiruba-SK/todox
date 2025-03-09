@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 // recoil js
 import { useRecoilState } from "recoil";
@@ -12,8 +12,20 @@ const LoginCard = () => {
   // local variables
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
+  const [csrfToken, setCsrfToken] = useState("");
 
-  // functions
+  // Fetch CSRF Token from Django when component loads
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/csrf/", {
+      method: "GET",
+      credentials: "include", // Ensures cookies are sent
+    })
+      .then((response) => response.json())
+      .then((data) => setCsrfToken(data.csrfToken)) // Save token to state
+      .catch((error) => console.error("CSRF Token Fetch Error:", error));
+  }, []);
+
+  // Login functions
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -26,7 +38,9 @@ const LoginCard = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
       },
+      credentials: "include",
       body: JSON.stringify(userCredentials),
     })
       .then((response) => response.json())
@@ -64,7 +78,7 @@ const LoginCard = () => {
             ref={passwordRef}
           />
 
-          <button className="login-button" type="submit" >
+          <button className="login-button" type="submit">
             Login
           </button>
         </form>
@@ -78,5 +92,3 @@ const LoginCard = () => {
 };
 
 export default LoginCard;
-
-
