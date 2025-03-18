@@ -32,7 +32,7 @@ const Header = (props) => {
             }
           }}>
             <span>
-              <AddIcon fontsize="large" />
+              <AddIcon fontSize="large" />
             </span>{" "}
             New
           </button>

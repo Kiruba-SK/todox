@@ -145,4 +145,11 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
 ]
 
+# Allow credentials like cookies or session data
+CORS_ALLOW_CREDENTIALS = True
+
+# CSRF Settings
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
                 
