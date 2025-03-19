@@ -4,18 +4,18 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import { useNavigate } from "react-router-dom";
 // recoil js
 import userInfoAtom from "../../recoil/userInfoAtom";
-import addTaskAtom from "../../recoil/addTaskAtom"
+import addTaskAtom from "../../recoil/addTaskAtom";
 import { useRecoilState } from "recoil";
- 
+
 const Header = (props) => {
   // global variables
+  // eslint-disable-next-line no-unused-vars
   const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
   const [addTask, setAddTask] = useRecoilState(addTaskAtom);
 
   useEffect(() => {
     console.log(addTask);
   }, [addTask]);
-  
 
   const navigate = useNavigate();
   return (
@@ -24,13 +24,16 @@ const Header = (props) => {
         <h1 className="header-logo-text">TodoX</h1>
 
         <div className="btn-container">
-          <button className="new-task-btn" onClick={() => {
-            if(addTask){
-              setAddTask(null);
-            } else {
-              setAddTask(true);
-            }
-          }}>
+          <button
+            className="new-task-btn"
+            onClick={() => {
+              if (addTask) {
+                setAddTask(null);
+              } else {
+                setAddTask(true);
+              }
+            }}
+          >
             <span>
               <AddIcon fontSize="large" />
             </span>{" "}
@@ -41,7 +44,7 @@ const Header = (props) => {
             onClick={() => {
               localStorage?.clear();
               setUserInfo(false);
-              navigate("/"); 
+              navigate("/");
             }}
           >
             <LogoutRoundedIcon fontSize="large" />

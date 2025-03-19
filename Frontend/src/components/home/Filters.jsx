@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { filterEndpoints } from "../../helper/filter";
 import { useRecoilState } from "recoil";
 import todoDataAtom from "../../recoil/todoDataAtom";
@@ -7,6 +7,7 @@ import filterDataAtom from "../../recoil/filterDataAtom";
 
 const Filters = () => {
   // global variable
+  // eslint-disable-next-line no-unused-vars
   const [todoApiData, setTodoApiData] = useRecoilState(todoDataAtom);
   const [activeFilter, setActiveFilter] = useRecoilState(activeFilterAtom);
   const [filterData, setFilterData] = useRecoilState(filterDataAtom);

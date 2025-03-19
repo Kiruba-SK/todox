@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import addTaskAtom from "../../recoil/addTaskAtom";
 import todoDataAtom from "../../recoil/todoDataAtom";
 import editTaskAtom from "../../recoil/editTaskAtom";
 import filterDataAtom from "../../recoil/filterDataAtom";
@@ -9,9 +8,11 @@ import closeTaskAtom from "../../recoil/closeTaskAtom";
 
 const EditTask = () => {
   // Global variable
-  const [addTask, setAddTask] = useRecoilState(addTaskAtom);
+  // const [addTask, setAddTask] = useRecoilState(addTaskAtom);
+  // eslint-disable-next-line no-unused-vars
   const [todoApiData, setTodoApiData] = useRecoilState(todoDataAtom);
   const [selectedEditTask, setSelectedEditTask] = useRecoilState(editTaskAtom);
+  // eslint-disable-next-line no-unused-vars
   const [filterData, setFilterData] = useRecoilState(filterDataAtom);
   const [closeTask, setCloseTask] = useRecoilState(closeTaskAtom);
   const [csrfToken, setCsrfToken] = useState("");

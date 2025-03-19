@@ -8,9 +8,11 @@ import closeTaskAtom from "../../recoil/closeTaskAtom";
 
 const AddTask = () => {
   // Global variable
+  /* eslint-disable no-unused-vars */
   const [addTask, setAddTask] = useRecoilState(addTaskAtom);
   const [todoApiData, setTodoApiData] = useRecoilState(todoDataAtom);
   const [filterData, setFilterData] = useRecoilState(filterDataAtom);
+  /* eslint-enable no-unused-vars */
   const [closeTask, setCloseTask] = useRecoilState(closeTaskAtom);
   const [csrfToken, setCsrfToken] = useState("");
 

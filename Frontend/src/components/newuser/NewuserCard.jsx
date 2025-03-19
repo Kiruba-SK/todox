@@ -4,6 +4,7 @@ import newUserAtom from "../../recoil/newUserAtom";
 import { useNavigate } from "react-router-dom";
 
 const NewuserCard = () => {
+  // eslint-disable-next-line no-unused-vars
   const [newUserTask, setNewUserTask] = useRecoilState(newUserAtom);
   const [csrfToken, setCsrfToken] = useState("");
 

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -13,11 +13,14 @@ import filterDataAtom from "../../recoil/filterDataAtom";
 const Todos = () => {
   // global variable
   const [todoApiData, setTodoApiData] = useRecoilState(todoDataAtom);
+  /* eslint-disable no-unused-vars */
   const [activeFilter, setActiveFilter] = useRecoilState(activeFilterAtom);
-  const [selectedEditTask, setSelectedEditTask] = useRecoilState(editTaskAtom);
   const [filterData, setFilterData] = useRecoilState(filterDataAtom);
+  /* eslint-disable no-unused-vars */
+  const [setSelectedEditTask] = useRecoilState(editTaskAtom);
+
   // local variable
-  const [inputData, setInputData] = useRecoilState(searchTextAtom);
+  const [inputData] = useRecoilState(searchTextAtom);
   const [csrfToken, setCsrfToken] = useState("");
 
   // Fetch CSRF Token from Django when component loads
@@ -37,14 +40,12 @@ const Todos = () => {
         {todoApiData
           ?.filter((filtered_data) => {
             if (inputData === "") {
-              return filtered_data;
-            } else if (
-              filtered_data?.title
+              return true;
+            } 
+              return filtered_data?.title
                 ?.toLowerCase()
                 ?.includes(inputData?.toLowerCase())
-            ) {
-              return filtered_data;
-            }
+            
           })
           ?.map((data, index) => {
             return (

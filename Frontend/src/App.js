@@ -9,6 +9,7 @@ import userInfoAtom from "./recoil/userInfoAtom";
 // import { useEffect } from "react";
 
 function App() {
+  // eslint-disable-next-line no-unused-vars
   const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
 
   // useEffect(() => {

@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 
 const LoginCard = () => {
   //global variables
+  // eslint-disable-next-line no-unused-vars
   const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
   // local variables
   const usernameRef = useRef(null);
